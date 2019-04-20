@@ -1,0 +1,15 @@
+module: "apt"
+  package: "apache2"
+  action: "install"
+
+module: "file"
+  src: "index.php"
+  dest: "/var/www/app/" 
+  owner: "apache"
+  group: "apache"
+  mod: 640
+  action: "create"
+
+module: "service"
+  action: "restart"
+  name: "apache2"

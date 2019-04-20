@@ -1,0 +1,3 @@
+setup(
+    scripts=['bin/hephaestus'],
+)

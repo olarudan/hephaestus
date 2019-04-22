@@ -1,0 +1,6 @@
+ssh:
+  username: changeme
+  password: changeme
+
+manifest_path: examples/manifest.yml
+inventory_path: examples/inventory.yml

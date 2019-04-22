@@ -1,6 +1,0 @@
-ssh:
-  username: root
-  password: foobarbaz
-
-manifest_path: examples/manifest.yml
-inventory_path: examples/inventory.yml

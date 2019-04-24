@@ -1,16 +1,37 @@
 - name: "Install apache2 package"  
-  module: "apt"
+  apt:
     package: "apache2"
     action: "install"
-- name: "Copy php app to apache's DocumentRoot"
-  module: "file"
-    src: "index.php"
-    dest: "/var/www/app/" 
-    owner: "apache"
-    group: "apache"
-    mod: 640
-    action: "create"
+
+- name: "Install php package"
+  apt:
+    package: "php5"
+    action: "install"
+
+- name: "Install libapache2-mod-php5 package"
+  apt:
+    package: "libapache2-mod-php5"
+    action: "install"
+
+- name: "Configure apache DirectoryIndex"
+  file:
+    src: "examples/dir.conf"
+    dest: "/etc/apache2/mods-enabled/dir.conf" 
+    owner: "root"
+    group: "root"
+    mod: 644
+    action: "present"
+
+- name: "Deploy PHP app"
+  file:
+    src: "examples/index.php"
+    dest: "/var/www/html/index.php" 
+    owner: "www-data"
+    group: "www-data"
+    mod: 644
+    action: "present"
+
 - name: "Restart the apache2 service"
-  module: "service"
-    service: "apache2"
+  service:
+    name: "apache2"
     action: "restart"

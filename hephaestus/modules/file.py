@@ -7,9 +7,12 @@ class File:
   def __init__(self, task, ssh_client):
     self.log = logging.getLogger(__name__)
 
+    # get module name from module __name__ 
+    module = __name__.split('.')[-1]
+
     # make sure valid actions are selected `present` and `absent`
-    if (task['module']['action'] in ['present', 'absent']):
-      self.action = task['module']['action']
+    if (task[module]['action'] in ['present', 'absent']):
+      self.action = task[module]['action']
     else:
       msg = "Invalid actions were provided for % module, please correct them. Valid options are: `present` and `absent` " % (__name__)
       self.log.error(msg)
@@ -17,12 +20,12 @@ class File:
 
     self.name = task['name']
     self.ssh_client = ssh_client
-    self.src = task['module']['src']
-    self.dest = task['module']['dest']
+    self.src = task[module]['src']
+    self.dest = task[module]['dest']
     self.dest_tmp = "/tmp/%s" % (os.path.basename(self.dest))
-    self.owner = task['module']['owner']
-    self.group = task['module']['group']
-    self.mod = task['module']['mod']
+    self.owner = task[module]['owner']
+    self.group = task[module]['group']
+    self.mod = task[module]['mod']
     
 
   def file_exists(self):
@@ -103,9 +106,9 @@ class File:
               self.ssh_client.copy_file(self.src, self.dest)
               return True
             else:
-              return False, "UNCHANGED"
+              return False
           else:
-            return False, "UNCHANGED" 
+            return False
         else:
           # copy src file to dest file because dest file does not exist
           self.ssh_client.copy_file(self.src, self.dest)
@@ -121,4 +124,4 @@ class File:
         self.remove_file(self.dest)
         return True
       else:
-        return False, "UNCHANGED"
+        return False

@@ -5,9 +5,12 @@ class Apt:
   def __init__(self, task, ssh_client):
     self.log = logging.getLogger(__name__)
 
+    # get module name from module __name__
+    module = __name__.split('.')[-1]
+
     # make sure valid actions are selected `install` or `remove`
-    if (task['module']['action'] in ['remove', 'install']):
-      self.action = task['module']['action']
+    if (task[module]['action'] in ['remove', 'install']):
+      self.action = task[module]['action']
     else:
       msg = 'Invalid actions were provided for Apt module, please correct them. Valid options are: `install` and `remove`'
       self.log.error(msg)
@@ -15,7 +18,7 @@ class Apt:
 
     self.name = task['name']
     self.ssh_client = ssh_client
-    self.package = task['module']['package']
+    self.package = task[module]['package']
     
   def is_installed(self):
     # use this function to guarantee indempotence
@@ -32,28 +35,14 @@ class Apt:
     is_package_installed = self.is_installed()
 
     if ((not is_package_installed) and (self.action == 'install')): # install package
-      cmd = "apt-get update && apt-get %s %s -y" % (self.action, self.package)
+      cmd = "echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections && apt-get update && apt-get %s %s -y" % (self.action, self.package)
       stdout, stderr = self.ssh_client.execute(cmd)
-
-      # figure out weather apt package was removed successfully
-      if (self.is_installed()):
-        self.log.info('Apt `%s` package was installed' % (self.package))
-        return 'SUCCESS'
-      else:
-        self.log.info('Apt `%s` package was NOT installed' % (self.package))
-        return 'FAIL'
+      return True
 
     elif ((is_package_installed) and (self.action == 'remove')): # remove package
       cmd = "apt-get %s %s -y" % (self.action, self.package)
       stdout, stderr = self.ssh_client.execute(cmd)
+      return True
 
-      # figure out weather apt package was removed successfully
-      if (not self.is_installed()):
-        self.log.info('Apt `%s` package was removed' % (self.package))
-        return 'SUCCESS'
-      else:
-        self.log.info('Apt `%s` package was NOT removed' % (self.package))
-        return 'FAIL'
-    else:
-        self.log.info('Apt %s action on %s package resulted in NO CHANGE' % (self.action, self.package))
-        return 'NO_CHANGE'
+    else: # everything else assumes no change
+      return False

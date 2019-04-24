@@ -1,0 +1,37 @@
+- name: "Install apache2 package"  
+  apt:
+    package: "apache2"
+    action: "install"
+
+- name: "Install php package"
+  apt:
+    package: "php5"
+    action: "install"
+
+- name: "Install libapache2-mod-php5 package"
+  apt:
+    package: "libapache2-mod-php5"
+    action: "install"
+
+- name: "Configure apache DirectoryIndex"
+  file:
+    src: "examples/apache2/dir.conf"
+    dest: "/etc/apache2/mods-enabled/dir.conf" 
+    owner: "root"
+    group: "root"
+    mod: 644
+    action: "present"
+
+- name: "Deploy PHP app"
+  file:
+    src: "examples/app/index.php"
+    dest: "/var/www/html/index.php" 
+    owner: "www-data"
+    group: "www-data"
+    mod: 644
+    action: "present"
+
+- name: "Restart the apache2 service"
+  service:
+    name: "apache2"
+    action: "restart"

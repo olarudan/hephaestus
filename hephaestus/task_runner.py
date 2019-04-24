@@ -10,6 +10,28 @@ import logging
 import yaml
 
 class TaskRunner:
+  """
+  A class used to run tasks on a remote hosts.
+
+  This class is responsible for running a list of tasks encapsulated in a manifest file. It will also figure out
+  the module (`apt`, `service`, `file`) responsible for executing a particular task.The tasks runner can run 
+  a manifest against multiple hosts by iterating over the hosts file that contains one hostname per line.
+
+  Attributes
+  ----------
+  tasks : dict
+      tasks to be executed loaded from a manifest YAML file.
+  hosts : list
+      list of hostnames that the manifest will be applied on 
+
+  Methods
+  -------
+  mgs()
+      helper method to display the status of the task execution
+  run()
+      executes tasks from a manifest file on hostnames from the hosts file.
+  """
+
   def __init__(self):
     # load manifest file
     with open(config['manifest']) as yml_file:
@@ -26,8 +48,15 @@ class TaskRunner:
       print "NO CHANGE\n"
 
   def run(self):
-    try:
+    """ Executes tasks from a manifest file on hostnames from the hosts file.
 
+    This method will iterate over each host in the hosts file and execute a list of tasks from a manifest file.
+    Each task is going to be assigned a module responsible for the executing it. It will also make sure to close
+    the ssh connection after running all tasks for a particular host. The progress of the task runner will be
+    output to the screen in the following format: TASK( {{ module_name }} - [ {{ hostname }} ]): {{ task_name }}
+    """
+
+    try:
       for host in self.hosts:
         # create ssh connection
         ssh_client = SSH(host)
@@ -51,7 +80,12 @@ class TaskRunner:
           elif (module == 'service'):
             service_task = Service(task, ssh_client)
             self.msg(service_task.execute_action())
+
+      # close ssh connection
+      ssh_client.close()
     except:
       pass
+      # log an error here
     finally:
+      # close ssh connection
       ssh_client.close()

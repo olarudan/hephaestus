@@ -6,9 +6,12 @@ class Service:
   def __init__(self, task, ssh_client):
     self.log = logging.getLogger(__name__)
 
+    # get module name from module __name__
+    module = __name__.split('.')[-1]
+
     # make sure valid actions are selected `restart`
-    if (task['module']['action'] in ['restart']):
-      self.action = task['module']['action']
+    if (task[module]['action'] in ['restart']):
+      self.action = task[module]['action']
     else:
       msg = "Invalid actions were provided for % module, please correct them. Valid options are: `restart`" % (__name__)
       self.log.error(msg)
@@ -16,7 +19,7 @@ class Service:
 
     self.name = task['name']
     self.ssh_client = ssh_client
-    self.service = task['module']['service']
+    self.service = task[module]['name']
     
 
   def is_installed(self):
@@ -57,5 +60,7 @@ class Service:
         sys.exit(1)
         
     else:
-      self.log.error("Failed to %s `%s` because the service does not exist." % (self.action, self.service))
-      sys.exit(1)
+      msg = "Failed to %s `%s` because the service does not exist." % (self.action, self.service)
+      self.log.error(msg)
+      #raise Exception(msg)
+      return False

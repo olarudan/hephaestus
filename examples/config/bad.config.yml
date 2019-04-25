@@ -1,0 +1,6 @@
+ssh:
+  username: root
+  password: ri9zjmF~6nHGViMYXzZ@DVnYg
+
+hosts: "examples/hosts"
+log_level: "ERROR"

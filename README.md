@@ -10,21 +10,24 @@ A rudimentary configuration management tool
 - [Architecture](#architecture)
 - [What can be improved](#improvements)
 
-## Installation
+## Installation (tested on ubuntu 14.04)
 Make sure that the following software is installed on your system:
 - `python` (tested with version `2.7.10`)
 - `pip` (tested with version `18.1`)
+```
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+```
 
 ```sh
 tar -xvzf hephaestus.tar.gz
 cd hephaestus
-pip install .
+pip -r requirements.txt install
 ```
 
 ## Usage
 The following command will run a manifest ([examples/manifests/manifest.yml](examples/manifests/manifest.yml)) against a list of hosts ([examples/hosts](examples/hosts)) using the ([config.yml.example](config.yml.example)) configuration file.
 
-`hep -c config.yml -i examples/hosts examples/manifests/manifest.yml`
+`hep -c config.example.yml -i examples/hosts examples/manifests/manifest.yml`
 
 For more information on cli args use:
 `hep -h`

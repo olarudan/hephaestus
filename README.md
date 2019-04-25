@@ -23,8 +23,7 @@ python get-pip.py
 ```sh
 tar -xvzf hephaestus.tar.gz
 cd hephaestus
-pip install -r requirements.txt
-pip install .
+pip install -r requirements.txt .
 ```
 
 ## Usage

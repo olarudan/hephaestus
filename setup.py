@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    scripts=['bin/hephaestus'],
+    scripts=['bin/hep'],
 )
 
 setup(name='hephaestus',

@@ -2,5 +2,6 @@ ssh:
   username: changeme
   password: changeme
 
-manifest: examples/manifests/manifest.yml
-hosts: examples/hosts
+manifest: "examples/manifests/manifest.yml"
+hosts: "examples/hosts"
+log_level: "INFO"

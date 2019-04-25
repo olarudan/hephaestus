@@ -14,7 +14,7 @@ from file import File
 from hephaestus.task_runner import TaskRunner
 
 # configure logging
-logging.basicConfig(level=os.environ.get("LOGLEVEL", "ERROR"))
+logging.basicConfig(level=os.environ.get("LOGLEVEL", config['log_level']))
 
 # invoke the task runner
 task_runner = TaskRunner()

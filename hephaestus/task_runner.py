@@ -1,8 +1,6 @@
 from hephaestus.config import config
 from hephaestus.ssh import SSH
-from hephaestus.modules.apt import Apt
-from hephaestus.modules.service import Service
-from hephaestus.modules.file import File
+import importlib
 
 import os
 import sys
@@ -66,20 +64,12 @@ class TaskRunner:
           module = list(task)[1]
           print ("TASK(%s module - [ %s ]): %s" %((module), host, task['name']))
 
-          # apt module
-          if (module == 'apt'):
-            apt_task = Apt(task, ssh_client)
-            self.msg(apt_task.execute_action())
-
-          # file module
-          elif (module == 'file'):
-            file_task = File(task, ssh_client)
-            self.msg(file_task.execute_action())
-
-          # service
-          elif (module == 'service'):
-            service_task = Service(task, ssh_client)
-            self.msg(service_task.execute_action())
+          # load module and instantiate class objects dynamically
+          # the following convention should be followed: Class name is capitalized.
+          hep_module = importlib.import_module("hephaestus.modules.%s" % (module))
+          hep_class = getattr(hep_module, module.capitalize())
+          hep_task = hep_class(task, ssh_client)
+          self.msg(hep_task.execute_action())
 
       # close ssh connection
       ssh_client.close()

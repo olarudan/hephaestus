@@ -13,7 +13,7 @@ class File:
   ----------
   task : dict
       name - name of the task
-      action - action of the task (remove or install)
+      action - action of the task (present or absent)
       package - the action is going to be perfomred on an apt package
       src - path to the source file
       dest - path to the destination (remote host) file

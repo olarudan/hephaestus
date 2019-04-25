@@ -17,7 +17,9 @@ class Config:
 
     # override config file path if passed through clid
     if (self.args.config == None):
-      dir = os.path.dirname(os.path.realpath(sys.argv[0]))
+      # by default hep will look in the current working dir for a config.yml file
+      #dir = os.path.dirname(os.path.realpath(sys.argv[0]))
+      dir = os.getcwd()
       config_file_path = os.path.join(dir, "config.yml")
     else:
       config_file_path = os.path.realpath(self.args.config)
@@ -28,10 +30,12 @@ class Config:
 
     # override manifest file path if passed through cli
     if (self.args.manifest != []):
+      # by default hep will look for the manifest file path in config file
       self.cfg['manifest'] = self.args.manifest[0]
 
     # override hosts file path if passed through cli
     if (self.args.hosts != None):
+      # by default hep will look for the hosts file path in config file
       self.cfg['hosts'] = self.args.hosts
 
   def get_config(self):

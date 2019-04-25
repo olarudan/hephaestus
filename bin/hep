@@ -5,6 +5,7 @@ sys.path.insert(0, 'hephaestus/modules')
 
 import os
 import logging
+import warnings
 
 from hephaestus.config import config
 from hephaestus.ssh import SSH
@@ -12,6 +13,10 @@ from apt import Apt
 from service import Service
 from file import File
 from hephaestus.task_runner import TaskRunner
+
+# ignore paramiko warnings until an update version is pushed https://github.com/paramiko/paramiko/issues/1386
+warnings.filterwarnings(action='ignore',module='.*paramiko.*')
+warnings.filterwarnings(action='ignore',module='.*cryptography.*')
 
 # configure logging
 logging.basicConfig(level=os.environ.get("LOGLEVEL", config['log_level']))

@@ -4,4 +4,4 @@ ssh:
 
 manifest: "examples/manifests/manifest.yml"
 hosts: "examples/hosts"
-log_level: "INFO"
+log_level: "ERROR"

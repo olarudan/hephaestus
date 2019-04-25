@@ -31,12 +31,14 @@ class TaskRunner:
   """
 
   def __init__(self):
+    self.log = logging.getLogger(__name__)
+
     # load manifest file
-    with open(config['manifest']) as yml_file:
+    with open(os.path.realpath(config['manifest'])) as yml_file:
       self.tasks = yaml.load(yml_file)
 
     # load hosts file
-    with open(config['hosts']) as f:
+    with open(os.path.realpath(config['hosts'])) as f:
       self.hosts = [x.strip() for x in f.readlines()]
 
   def msg(self, task):
@@ -66,15 +68,15 @@ class TaskRunner:
 
           # load module and instantiate class objects dynamically
           # the following convention should be followed: Class name is capitalized.
-          hep_module = importlib.import_module("hephaestus.modules.%s" % (module))
+          hep_module = importlib.import_module("%s" % (module))
           hep_class = getattr(hep_module, module.capitalize())
           hep_task = hep_class(task, ssh_client)
           self.msg(hep_task.execute_action())
 
       # close ssh connection
       ssh_client.close()
-    except:
-      pass
+    except Exception as e:
+      self.log.error('A failure occured while executing the task runner:\n %s' % (e))
       # log an error here
     finally:
       # close ssh connection

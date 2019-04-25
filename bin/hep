@@ -1,0 +1,18 @@
+#!/usr/bin/env python
+
+from hephaestus.config import config
+from hephaestus.ssh import SSH
+from hephaestus.modules.apt import Apt
+from hephaestus.modules.service import Service
+from hephaestus.modules.file import File
+from hephaestus.task_runner import TaskRunner
+
+import os
+import logging
+
+# configure logging
+logging.basicConfig(level=os.environ.get("LOGLEVEL", "ERROR"))
+
+# invoke the task runner
+task_runner = TaskRunner()
+task_runner.run()

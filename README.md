@@ -132,3 +132,4 @@ The list of improvements that could be implemented for `hep`:
 - `Iteration functionality` for `hep modules` (i.e one task would install a list of packages rather than creating a separate task for each package install)
 - Polish module functionality to make some parameters optional (i.e. if `scr` option is omitted from `apt` then the module will not copy the src file to the destination but still execute the other options i.e change mod of the dest file)
 - A better way to handle cli args: https://github.com/google/python-fire
+- Make the code PEP 8 compliant

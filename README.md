@@ -16,7 +16,7 @@ Make sure that the following software is installed on your system:
 - `pip` (tested with version `18.1`)
 
 ```sh
-git clone https://github.com/olarudan/hephaestus.git
+tar -xvzf hephaestus.tar.gz
 cd hephaestus
 pip install .
 ```

@@ -7,7 +7,7 @@ setup(
     description='Hephaestus rudimentary configuration management tool',
     url='https://github.com/olarudan/hephaestus',
     author='Dan Olaru',
-    author_email='olarudan@gmail.com',
+    author_email='none@github.com',
     license='MIT',
     packages=['hephaestus'],
     zip_safe=False)

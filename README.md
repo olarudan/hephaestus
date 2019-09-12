@@ -1,6 +1,6 @@
 # Hephaestus
 
-A rudimentary configuration management tool
+A rudimentary configuration management tool.  This tool was created for education purposes since I wanted to learn the ins and outs of implementing something similar to `Ansible` or `Chef`.
 
 ## Table of Contents
 
@@ -133,3 +133,4 @@ The list of improvements that could be implemented for `hep`:
 - Polish module functionality to make some parameters optional (i.e. if `scr` option is omitted from `apt` then the module will not copy the src file to the destination but still execute the other options i.e change mod of the dest file)
 - A better way to handle cli args: https://github.com/google/python-fire
 - Make the code PEP 8 compliant
+- Upgrade to Python 3
